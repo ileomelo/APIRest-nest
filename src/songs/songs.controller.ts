@@ -3,8 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpException,
-  HttpStatus,
   Param,
   ParseIntPipe,
   Post,
@@ -12,50 +10,39 @@ import {
 } from '@nestjs/common';
 import { SongsService } from './songs.service';
 import { CreateSongDTO } from './dto/create-song.dto';
+import { Song } from './entities/songs.entity';
+import { UpdateSongDTO } from './dto/update-song.dto';
+import { UpdateResult } from 'typeorm';
 
 @Controller('songs')
 export class SongsController {
-  constructor(private songsService: SongsService) { }
+  constructor(private songsService: SongsService) {}
 
   @Post()
-  create(@Body() createSongDTO: CreateSongDTO) {
-    const result = this.songsService.create(createSongDTO);
-    return result;
+  create(@Body() createSongDTO: CreateSongDTO): Promise<Song> {
+    return this.songsService.create(createSongDTO);
   }
 
   @Get()
-  findAll() {
-    try {
-      return this.songsService.findAll();
-    } catch (e) {
-      throw new HttpException(
-        'Server Error',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-        { cause: e },
-      );
-    }
+  findAll(): Promise<Song[]> {
+    return this.songsService.findAll();
   }
 
   @Get(':id')
-  findOne(
-    @Param(
-      'id',
-      new ParseIntPipe({
-        errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE,
-      }),
-    )
-    id: number,
-  ) {
-    return `fetch song on the based on id ${typeof id}`;
+  findByID(@Param('id', ParseIntPipe) id: number): Promise<Song> {
+    return this.songsService.findByID(id);
   }
 
   @Put(':id')
-  update() {
-    return 'update song on the based on id';
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateSongDTO: UpdateSongDTO,
+  ): Promise<UpdateResult> {
+    return this.songsService.update(id, updateSongDTO);
   }
 
   @Delete(':id')
-  delete() {
-    return 'delete a song on the based on id';
+  delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    return this.songsService.remove(id);
   }
 }
