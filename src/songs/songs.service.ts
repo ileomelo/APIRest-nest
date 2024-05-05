@@ -9,12 +9,15 @@ import {
   Pagination,
   paginate,
 } from 'nestjs-typeorm-paginate';
+import { Artist } from './entities/artist.entity';
 
 @Injectable()
 export class SongsService {
   constructor(
     @InjectRepository(Song)
     private songRepository: Repository<Song>,
+    @InjectRepository(Artist)
+    private artistRepository: Repository<Artist>,
   ) {}
 
   async create(songDTO: CreateSongDTO): Promise<Song> {
@@ -24,6 +27,9 @@ export class SongsService {
     song.duration = songDTO.duration;
     song.lyrics = songDTO.lyrics;
     song.releasedDate = songDTO.releasedDate;
+
+    const artists = await this.artistRepository.findByIds(songDTO.artists);
+    song.artist = artists;
 
     return await this.songRepository.save(song);
   }
