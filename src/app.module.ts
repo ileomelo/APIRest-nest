@@ -7,14 +7,17 @@ import { LoggerMiddleware } from './common/middleware/logger/logger.middleware';
 import { SongsController } from './songs/songs.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import { Song } from './songs/entities/songs.entity';
-import { User } from './songs/entities/user.entity';
-import { Artist } from './songs/entities/artist.entity';
+import { Song } from './entities/songs.entity';
+import { User } from './entities/user.entity';
+import { Artist } from './entities/artist.entity';
+import { PlaylistModule } from './playlist/playlist.module';
+import { PlayList } from './entities/playlist.entity';
 
 @Module({
   imports: [
     SongsModule,
     LoggerModule,
+    PlaylistModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -22,7 +25,7 @@ import { Artist } from './songs/entities/artist.entity';
       username: 'postgres',
       password: 'root',
       database: 'n-test',
-      entities: [Song, User, Artist],
+      entities: [Song, User, Artist, PlayList],
       synchronize: true,
     }),
   ],
