@@ -14,12 +14,10 @@ import { PlaylistModule } from './playlist/playlist.module';
 import { PlayList } from './entities/playlist.entity';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { ArtistModule } from './artist/artist.module';
 
 @Module({
   imports: [
-    SongsModule,
-    LoggerModule,
-    PlaylistModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -30,8 +28,12 @@ import { AuthModule } from './auth/auth.module';
       entities: [Song, User, Artist, PlayList],
       synchronize: true,
     }),
+    SongsModule,
+    LoggerModule,
+    PlaylistModule,
     UserModule,
     AuthModule,
+    ArtistModule,
   ],
   controllers: [AppController, SongsController],
   providers: [AppService],
