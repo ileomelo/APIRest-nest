@@ -4,6 +4,7 @@ import { CreateUserDTO } from 'src/user/dto/create-user.dto';
 import { LoginUserDTO } from 'src/user/dto/login-user.dto';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
+import { v4 as uuid4 } from 'uuid';
 
 @Controller('auth')
 export class AuthController {
@@ -13,8 +14,19 @@ export class AuthController {
   ) {}
 
   @Post('signup')
-  signup(@Body() userDTO: CreateUserDTO): Promise<User> {
-    return this.userService.create(userDTO);
+  async signup(@Body() userDTO: CreateUserDTO): Promise<User> {
+    const user = new User();
+    user.apiKey = uuid4();
+    user.firstName = userDTO.firstName;
+    user.lastName = userDTO.lastName;
+    user.email = userDTO.email;
+    user.password = userDTO.password;
+
+    const savedUser = await this.userService.create(user);
+
+    delete savedUser.password;
+
+    return savedUser;
   }
 
   @Post('login')

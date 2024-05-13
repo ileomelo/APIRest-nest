@@ -11,6 +11,10 @@ export class UserService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
+  async findByApiKey(apiKey: string): Promise<User> {
+    return this.userRepository.findOneBy({ apiKey });
+  }
+
   async create(userDTO: CreateUserDTO): Promise<User> {
     const salt = await bcrypt.genSalt();
     userDTO.password = await bcrypt.hash(userDTO.password, salt);

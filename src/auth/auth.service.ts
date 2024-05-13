@@ -5,6 +5,7 @@ import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { ArtistService } from 'src/artist/artist.service';
 import { PayloadType } from './types/payload.type';
+import { User } from 'src/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -13,6 +14,10 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private artistService: ArtistService,
   ) {}
+
+  async validateUserByApiKey(apiKey: string): Promise<User> {
+    return this.userService.findByApiKey(apiKey);
+  }
 
   async login(loginDTO: LoginUserDTO): Promise<{ accessToken: string }> {
     const user = await this.userService.findOne(loginDTO);
