@@ -4,9 +4,10 @@ import { AuthController } from './auth.controller';
 import { UserModule } from 'src/user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { authConstants } from './auth.constants';
-import { JWTStrategy } from './jwt.strategy';
+import { JWTStrategy } from './strategies/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { ArtistModule } from 'src/artist/artist.module';
+import { ApiKeyStrategy } from './strategies/apiKey.strategy';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { ArtistModule } from 'src/artist/artist.module';
       },
     }),
   ],
-  providers: [AuthService, JWTStrategy],
+  providers: [AuthService, JWTStrategy, ApiKeyStrategy],
   controllers: [AuthController],
   exports: [AuthService],
 })
