@@ -23,7 +23,7 @@ export class User {
   @Exclude()
   password: string;
 
-  @Column()
+  @Column({ nullable: true })
   phone: string;
 
   @OneToMany(() => PlayList, (playList) => playList.user)
