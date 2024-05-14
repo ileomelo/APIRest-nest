@@ -13,9 +13,16 @@ import { AuthModule } from './auth/auth.module';
 import { ArtistModule } from './artist/artist.module';
 import { dataSourceOptions } from 'db/data-source';
 import { SeedModule } from './seed/seed.module';
+import { ConfigModule } from '@nestjs/config';
+import configuration from './config/configuration';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: ['.development.env', '.production.env'],
+      isGlobal: true,
+      load: [configuration],
+    }),
     TypeOrmModule.forRoot(dataSourceOptions),
     SongsModule,
     LoggerModule,
