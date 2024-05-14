@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { User } from 'src/entities/user.entity';
 import { CreateUserDTO } from 'src/user/dto/create-user.dto';
 import { LoginUserDTO } from 'src/user/dto/login-user.dto';
@@ -32,5 +32,10 @@ export class AuthController {
   @Post('login')
   signIn(@Body() loginDTO: LoginUserDTO) {
     return this.authService.login(loginDTO);
+  }
+
+  @Get('test')
+  testEnv() {
+    return this.authService.getEnvVariables();
   }
 }

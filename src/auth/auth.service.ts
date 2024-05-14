@@ -6,6 +6,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ArtistService } from 'src/artist/artist.service';
 import { PayloadType } from './types/payload.type';
 import { User } from 'src/entities/user.entity';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -13,6 +14,7 @@ export class AuthService {
     private userService: UserService,
     private readonly jwtService: JwtService,
     private artistService: ArtistService,
+    private configService: ConfigService,
   ) {}
 
   async validateUserByApiKey(apiKey: string): Promise<User> {
@@ -42,5 +44,12 @@ export class AuthService {
     } else {
       throw new UnauthorizedException('Password does not match');
     }
+  }
+
+  // TEST
+  getEnvVariables() {
+    return {
+      port: this.configService.get<number>('port'),
+    };
   }
 }
