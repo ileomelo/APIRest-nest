@@ -12,6 +12,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ArtistModule } from './artist/artist.module';
 import { dataSourceOptions } from 'db/data-source';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { dataSourceOptions } from 'db/data-source';
     UserModule,
     AuthModule,
     ArtistModule,
+    SeedModule,
   ],
   controllers: [AppController, SongsController],
   providers: [AppService],
